@@ -1,17 +1,21 @@
 idf_component_register(
-    SRCS "src/4deiacs.cpp"
+    SRCS 
+        "src/4deiacs.cpp"
         "src/core/4deiacs_node_engine.cpp"
         "src/core/management/block_registry.cpp"
+        "src/core/management/connection_manager.cpp"
+        "src/core/management/json_parser.cpp"
         "src/blocks/timers/e_cycle_block.cpp"
-        "src/blocks/io/serial_monitor.cpp"
-    INCLUDE_DIRS "include"
-                "include/core"
-                "include/core/management"
-                "include/blocks/timers"
-                "include/blocks/io"
-    REQUIRES
-        cjson
+        "src/blocks/io/serial_monitor_block.cpp"
+    INCLUDE_DIRS 
+        "include"
+        "include/core"
+        "include/core/management"
+        "include/blocks/io"
+        "include/blocks/timers"
+    REQUIRES 
         esp_event
         esp_timer
+        cjson
     WHOLE_ARCHIVE
 )

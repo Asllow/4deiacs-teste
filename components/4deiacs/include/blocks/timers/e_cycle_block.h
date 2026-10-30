@@ -1,26 +1,33 @@
 #pragma once
 
-#include "core/i_function_block.h"
-#include "cJSON.h"
+#include <string>
+#include "i_function_block.h"
 #include "esp_timer.h"
+#include "cJSON.h"
 
 namespace deiacs{
 
 class ECycleBlock : public IFunctionBlock {
     public:
-        ECycleBlock(const std::string& id, cJSON* config);
+        ECycleBlock(const std::string& block_id, uint64_t period_ms);
         ~ECycleBlock() override;
 
         bool initialize() override;
-        std::string getId() const override { return id_; }
+
+        bool start();
+
+        bool stop();
 
         void* getDataOutput(const std::string& port_name) override;
-        bool connectDataInput(const std::string& port_name, void* data_pointer) override;
+        bool connectDataInput(const std::string& port_name, void* data_ptr) override;
         void triggerEventInput(const std::string& event_name) override;
+
+        static IFunctionBlock* create(const std::string& block_id, cJSON* config);
     private:
-        std::string id_;
-        uint64_t period_ms_;
-        esp_timer_handle_t timer_handle_;
+        uint64_t m_period_us;
+        esp_timer_handle_t m_timer_handle;
+        bool m_is_running;
+        float m_tick_count;
 
         void startTimer();
 
